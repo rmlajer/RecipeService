@@ -57,6 +57,23 @@ public class RecipesController : ControllerBase
         return returnRecipeDTO;
 
     }
+
+    [EnableCors]
+    [HttpGet("{id:int}")]
+    public RecipeDTO GetRecipeById(int id)
+    {
+        Console.WriteLine("Get Recipe by name");
+        var SQL = $"SELECT * FROM public.recipes WHERE id={id}";
+        RecipeDTO returnRecipeDTO = new(-1, "NULL-VALUE-ERROR", -1, -1, new List<int>(), new List<int>());
+
+        using (var connection = new NpgsqlConnection(dbConnection.connectionString))
+        {
+            returnRecipeDTO = connection.Query<RecipeDTO>(SQL).First();
+
+        }
+        return returnRecipeDTO;
+
+    }
     
     [EnableCors]
     [HttpPost()]
